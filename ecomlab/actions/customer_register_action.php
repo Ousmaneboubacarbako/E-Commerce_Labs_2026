@@ -35,6 +35,21 @@ if ($name === '' || $email === '' || $pass === '' || $country === '' || $city ==
     exit;
 }
 
+// Validate password strength: at least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+=\-{}\[\]:;"\'<>,.?\/\\|`~])[A-Za-z\d@$!%*?&#^()_+=\-{}\[\]:;"\'<>,.?\/\\|`~]{8,}$/', $pass)) {
+    echo json_encode([
+        "success" => false, 
+        "message" => "Password must be at least 8 characters with uppercase, lowercase, number, and special character."
+    ]);
+    exit;
+}
+
+// Validate email format
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["success" => false, "message" => "Invalid email format."]);
+    exit;
+}
+
 // Never store plain-text passwords. password_hash() turns the password
 // into a secure, one-way hash before it ever reaches the database.
 $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
