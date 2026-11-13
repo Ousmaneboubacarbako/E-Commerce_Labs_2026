@@ -13,6 +13,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Register Customer</title>
+	<link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
@@ -49,7 +50,10 @@
 						<div class="form-group">
 							<label for="customer_pass">Password</label>
 							<input type="password" name="customer_pass" id="customer_pass"
-								aria-describedby="customer_pass_error">
+								aria-describedby="customer_pass_error customer_pass_hint">
+							<small id="customer_pass_hint" class="form-hint">
+								Must be at least 8 characters with uppercase, lowercase, number, and special character
+							</small>
 							<span class="field-error" id="customer_pass_error" aria-live="polite"></span>
 						</div>
 						<div class="form-group">
@@ -94,6 +98,7 @@
 	<!-- Loads the shared JavaScript file that contains registerCustomer() -->
 	<script src="../js/customer.js"></script>
 	<script src="../js/validate.js"></script>
+	<script src="../js/password-strength.js"></script>
 </body>
 
 </html>

@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../core/core.php';
 core_require_login();
 
+// Only admins should see all customers
+require_admin('../index.php');
+
 // This is the "view" for listing every customer.
 // Flow: this page includes the functions file -> calls
 // getAllCustomersList() -> which calls the controller -> which calls
@@ -26,13 +29,13 @@ $customers = getAllCustomersList();
 	<?php require __DIR__ . '/layout/header.php'; ?>
 	<div class="page-shell">
 		<div class="card">
-			<nav>
+			<!--<nav>
 				<a href="../index.php">Home</a>
 				<a href="register.php">Register Customer</a>
-			</nav>
+			</nav>-->
 
 			<section class="section">
-				<h1>All Customers</h1>
+				<h1>All Customers </h1>
 
 				<div class="table-wrap">
 					<table>
@@ -55,12 +58,12 @@ $customers = getAllCustomersList();
 									HTML/JavaScript in the browser - this is called an XSS attack.
 								-->
 								<tr>
-									<td><?php echo htmlspecialchars($customer['customer_id']); ?></td>
-									<td><?php echo htmlspecialchars($customer['customer_name']); ?></td>
-									<td><?php echo htmlspecialchars($customer['customer_email']); ?></td>
-									<td><?php echo htmlspecialchars($customer['customer_country']); ?></td>
-									<td><?php echo htmlspecialchars($customer['customer_city']); ?></td>
-									<td><?php echo htmlspecialchars($customer['customer_contact']); ?></td>
+									<td data-label="ID"><?php echo htmlspecialchars($customer['customer_id']); ?></td>
+									<td data-label="Name"><?php echo htmlspecialchars($customer['customer_name']); ?></td>
+									<td data-label="Email"><?php echo htmlspecialchars($customer['customer_email']); ?></td>
+									<td data-label="Country"><?php echo htmlspecialchars($customer['customer_country']); ?></td>
+									<td data-label="City"><?php echo htmlspecialchars($customer['customer_city']); ?></td>
+									<td data-label="Contact"><?php echo htmlspecialchars($customer['customer_contact']); ?></td>
 								</tr>
 							<?php } ?>
 						</tbody>
