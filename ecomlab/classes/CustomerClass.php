@@ -86,4 +86,70 @@ class Customer extends Database
         return $customer;
     }
 
+    public function getCustomerById($customer_id)
+    {
+        $sql = "
+            SELECT
+                customer_id,
+                customer_name,
+                customer_email,
+                customer_country,
+                customer_city,
+                customer_contact,
+                customer_image,
+                user_role
+            FROM customer
+            WHERE customer_id = ?
+            LIMIT 1
+        ";
+
+        return $this->fetchOne($sql, [$customer_id]);
+    }
+
+    public function updateCustomer($customer_id, $name, $email, $country, $city, $contact, $image = null)
+    {
+        if ($image) {
+            $sql = "
+                UPDATE customer
+                SET customer_name = ?,
+                    customer_email = ?,
+                    customer_country = ?,
+                    customer_city = ?,
+                    customer_contact = ?,
+                    customer_image = ?
+                WHERE customer_id = ?
+            ";
+            return $this->execute($sql, [$name, $email, $country, $city, $contact, $image, $customer_id]);
+        } else {
+            $sql = "
+                UPDATE customer
+                SET customer_name = ?,
+                    customer_email = ?,
+                    customer_country = ?,
+                    customer_city = ?,
+                    customer_contact = ?
+                WHERE customer_id = ?
+            ";
+            return $this->execute($sql, [$name, $email, $country, $city, $contact, $customer_id]);
+        }
+    }
+
+    public function updatePassword($customer_id, $new_password)
+    {
+        $sql = "UPDATE customer SET customer_pass = ? WHERE customer_id = ?";
+        return $this->execute($sql, [$new_password, $customer_id]);
+    }
+
+    public function checkEmailExists($email, $exclude_customer_id = null)
+    {
+        if ($exclude_customer_id) {
+            $sql = "SELECT COUNT(*) as count FROM customer WHERE customer_email = ? AND customer_id != ?";
+            $result = $this->fetchOne($sql, [$email, $exclude_customer_id]);
+        } else {
+            $sql = "SELECT COUNT(*) as count FROM customer WHERE customer_email = ?";
+            $result = $this->fetchOne($sql, [$email]);
+        }
+        return $result && $result['count'] > 0;
+    }
+
 }
