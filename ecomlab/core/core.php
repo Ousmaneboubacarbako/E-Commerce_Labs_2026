@@ -153,3 +153,21 @@ function core_session_security()
 }
 
 core_session_security();
+
+
+function get_ip()
+{
+    // Check for shared internet/proxy
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    
+    // Validate and sanitize IP
+    $ip = filter_var($ip, FILTER_VALIDATE_IP);
+    
+    return $ip ? $ip : '0.0.0.0';
+}
